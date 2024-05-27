@@ -1,0 +1,12 @@
+baseURL = 'https://JustinHouser.github.io/'
+languageCode = 'en-us'
+title = 'My Resume'
+theme = 'hugo-PaperMod'
+contentDir = 'content'
+
+[params]
+  [params.cover]
+    linkfullimages = true
+
+    
+

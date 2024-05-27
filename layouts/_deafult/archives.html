@@ -1,0 +1,63 @@
+{{- define "main" }}
+
+<header class="page-header">
+  <h1>
+    {{ .Title }}
+    {{- if (.Param "ShowRssButtonInSectionTermList") }}
+    {{- $rss := (.OutputFormats.Get "rss") }}
+    {{- if (eq .Kind `page`) }}
+    {{- $rss = (.Parent.OutputFormats.Get "rss") }}
+    {{- end }}
+    {{- with $rss }}
+    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+    {{- end }}
+  </h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description }}
+  </div>
+  {{- end }}
+</header>
+
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- if site.Params.ShowAllPagesInArchive }}
+  {{- $pages = site.RegularPages }}
+{{- end }}
+
+{{- range $pages.GroupByPublishDate "2006" }}
+  {{- if ne .Key "0001" }}
+  <section class="archive-year">
+    <h2 class="archive-year-header" id="{{ .Key }}">
+      {{ .Key }}
+      <span class="archive-count">{{ len .Pages }}</span>
+    </h2>
+    {{- range .Pages.GroupByDate "January" }}
+    <div class="archive-month">
+      <h3 class="archive-month-header" id="{{ .Key }}">
+        {{ .Key }}
+        <span class="archive-count">{{ len .Pages }}</span>
+      </h3>
+      <ul class="archive-posts">
+        {{- range .Pages }}
+        <li class="archive-entry">
+          <a href="{{ .Permalink }}" class="archive-entry-title">{{ .Title }}</a>
+          <span class="archive-meta">{{ .Date.Format "January 2, 2006" }}</span>
+        </li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
+  </section>
+  {{- end }}
+{{- end }}
+
+{{ end }}{{/* end main */}}
+

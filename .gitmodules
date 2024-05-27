@@ -1,0 +1,4 @@
+[submodule "public2"]
+	path = public2
+	url = https://github.com/JustinAHouser/JustinHouser.github.io.git
+	branch = main
